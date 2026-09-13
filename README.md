@@ -83,8 +83,8 @@ Follow these step-by-step instructions to get File Juggler running on your PC in
 ### Step 1: Clone the Repository
 Open PowerShell or Command Prompt and run:
 ```powershell
-git clone https://github.com/your-username/File_juggler_projec.git
-cd File_juggler_projec
+git clone https://github.com/Manjunath0724/File_juggler_project.git
+cd File_juggler_project
 ```
 
 ### Step 2: Create a Virtual Environment
