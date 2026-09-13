@@ -126,7 +126,7 @@ if ($Engine -eq "InnoSetup") {
     $Stopwatch.Stop()
     Write-Host "Compilation completed in $($Stopwatch.Elapsed.TotalSeconds.ToString('F1'))s." -ForegroundColor Green
 
-    $ExpectedOutput = Join-Path $InstallerOutputDir "FileJuggler_Setup_v1.0.0.exe"
+    $ExpectedOutput = Join-Path $ProjectDir "dist\FileJuggler_Setup.exe"
 }
 elseif ($Engine -eq "NSIS") {
     if (-not $NsisPath) {
@@ -151,7 +151,7 @@ elseif ($Engine -eq "NSIS") {
     $Stopwatch.Stop()
     Write-Host "Compilation completed in $($Stopwatch.Elapsed.TotalSeconds.ToString('F1'))s." -ForegroundColor Green
 
-    $ExpectedOutput = Join-Path $InstallerOutputDir "FileJuggler_Setup_NSIS_v1.0.0.exe"
+    $ExpectedOutput = Join-Path $ProjectDir "dist\FileJuggler_Setup_NSIS.exe"
 }
 
 # ---------------------------------------------------------------------
@@ -164,6 +164,15 @@ if (Test-Path $ExpectedOutput) {
         & $SignScript -FilesToSign @($ExpectedOutput)
     }
 
+    # Clean up intermediate directory bundle so only the single setup .exe remains in dist
+    $IntermediateBundle = Join-Path $ProjectDir "dist\FileJuggler"
+    if (Test-Path $IntermediateBundle) {
+        Remove-Item -Path $IntermediateBundle -Recurse -Force -ErrorAction SilentlyContinue
+    }
+
+    # Clean up any leftover standalone or zip files so dist contains ONLY the setup .exe
+    Get-ChildItem -Path (Join-Path $ProjectDir "dist") | Where-Object { $_.FullName -ne $ExpectedOutput } | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
+
     $OutputItem = Get-Item $ExpectedOutput
     $SizeMB = ($OutputItem.Length / 1MB).ToString("F2")
     $Hash = (Get-FileHash -Path $ExpectedOutput -Algorithm SHA256).Hash
@@ -171,11 +180,11 @@ if (Test-Path $ExpectedOutput) {
     Write-Host "`n======================================================================" -ForegroundColor Green
     Write-Host "                   INSTALLER BUILD SUCCESSFUL!                        " -ForegroundColor Green
     Write-Host "======================================================================" -ForegroundColor Green
-    Write-Host "  Installer File : $ExpectedOutput" -ForegroundColor White
-    Write-Host "  File Size      : $SizeMB MB" -ForegroundColor White
-    Write-Host "  SHA256 Hash    : $Hash" -ForegroundColor Gray
+    Write-Host "  Setup Installer : $ExpectedOutput" -ForegroundColor White
+    Write-Host "  File Size       : $SizeMB MB" -ForegroundColor White
+    Write-Host "  SHA256 Hash     : $Hash" -ForegroundColor Gray
     Write-Host "======================================================================" -ForegroundColor Green
-    Write-Host "You can now distribute this setup executable to users." -ForegroundColor Cyan
+    Write-Host "This single setup .exe is the ONLY file you need to share with users." -ForegroundColor Cyan
 } else {
     Write-Error "Installer compilation finished but expected artifact not found at $ExpectedOutput"
     exit 1

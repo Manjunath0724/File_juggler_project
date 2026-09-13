@@ -29,8 +29,8 @@ AllowNoIcons=yes
 LicenseFile=..\LICENSE.txt
 
 ; Output installer artifact settings
-OutputDir=..\dist\installer
-OutputBaseFilename=FileJuggler_Setup_v{#MyAppVersion}
+OutputDir=..\dist
+OutputBaseFilename=FileJuggler_Setup
 SetupIconFile=..\assets\icon.ico
 UninstallDisplayIcon={app}\assets\icon.ico
 UninstallDisplayName={#MyAppName}
