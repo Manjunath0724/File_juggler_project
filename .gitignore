@@ -1,0 +1,51 @@
+# =====================================================================
+# File Juggler -- Git Ignore Configuration
+# =====================================================================
+
+# Byte-compiled / optimized Python files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Build & Compilation Artifacts
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Testing & Caches
+.pytest_cache/
+.coverage
+htmlcov/
+.cache
+
+# Application logs & Local runtime data
+app.log
+*.log
+.config/
+
+# Editor & IDE configurations
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Local compiler / tools cache
+tools/
+
+# Keep manifest tracked
+!app.manifest
